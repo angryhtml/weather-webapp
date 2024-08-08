@@ -15,6 +15,7 @@ body {
     background: url(pics/background.png);
     background-size: cover;
     background-position: center;
+    overflow: hidden;
 }
 
 .container {
@@ -110,6 +111,18 @@ body {
     transition-delay: .6s;
 }
 
+.weather-box .box .info-weather {
+    transform: translateY(-120%);
+}
+
+.container.active .weather-box .box .info-weather,
+.container.active .weather-details .humidity .info-humidity,
+.container.active .weather-details .wind .info-wind {
+    transform: translateY(0%);
+    position: relative;
+    transition: transform 1s ease;
+}
+
 .weather-box img {
     width: 170px; 
     height: 170px;
@@ -161,6 +174,12 @@ body {
     transition-delay: 1.2s;
 }
 
+.weather-details .humidity .info-humidity,
+.weather-details .wind .info-wind {
+    transform: translateY(-100%);
+    overflow: hidden;
+}
+
 .weather-details .humidity {
     padding-left: 20px;
     justify-content: flex-start;
@@ -204,5 +223,44 @@ body {
     font-size: 20px;
     font-weight: 500;
     margin-top: 12px;
+}
 
+.city-hide {
+    display: none;
+}
+
+#clone-info-weather,
+#clone-info-humidity,
+#clone-info-wind {
+    position: absolute;
+    transform: translateY(-100%);
+    
+    border: 1px solid red; /* Debugging border */
+    background-color: rgba(255, 0, 0, 0.1); /* Debugging background */
+}
+
+#clone-info-weather .weather {
+    transform: translateY(120%);
+    transition: display 1s ease, opacity 0s;
+    transition-delay: 0s, 2s;
+}
+
+.weather-box:not(.active) #clone-info-weather .weather{
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+.active-clone#clone-info-weather .weather {
+    transform: translateY(0%);
+}
+
+#clone-info-humidity span,
+#clone-info-wind span {
+    transform: translateY(100%);
+    transition: transform 1s ease;
+}
+
+.active-clone#clone-info-humidity span,
+.active-clone#clone-info-wind span {
+    transform: translateY(0%);
 }
