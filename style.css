@@ -18,6 +18,10 @@ body {
     overflow: hidden;
 }
 
+img {
+    display: block;
+}
+
 .container {
     position: relative;
     width: 400px;
@@ -81,6 +85,10 @@ body {
 }
 
 .weather-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     text-align: center;
     margin: 40px 0;
 }
@@ -124,6 +132,7 @@ body {
 }
 
 .weather-box img {
+    margin: 0 auto;
     width: 170px; 
     height: 170px;
     object-fit: contain;
@@ -134,7 +143,8 @@ body {
     font-size: 65px;
     line-height: 1;
     font-weight: 500;
-    margin: 20px 0 6px -30px;
+    margin: 20px 0 6px 0px;
+    text-align: center;
 }
 
 .weather-box .temperature span {
@@ -148,6 +158,18 @@ body {
     font-size: 24px;
     font-weight: 500;
     text-transform: capitalize;
+}
+
+.weather-box .box {
+    transform: translate(0);
+}
+
+.weather-box img,
+.weather-box .temperature,
+.weather .description {
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 .weather-details {
@@ -197,7 +219,7 @@ body {
 
 .weather-details span {
     display: inline-block;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 500;
 }
 
@@ -235,9 +257,9 @@ body {
     position: absolute;
     transform: translateY(-100%);
     
-    border: 1px solid red; /* Debugging border */
-    background-color: rgba(255, 0, 0, 0.1); /* Debugging background */
-}
+    /* border: 1px solid red; /* Debugging border */
+    /* background-color: rgba(255, 0, 0, 0.1); Debugging background */
+} 
 
 #clone-info-weather .weather {
     transform: translateY(120%);
