@@ -18,9 +18,9 @@ body {
     overflow: hidden;
 }
 
-img {
+/* img {
     display: block;
-}
+} */
 
 .container {
     position: relative;
