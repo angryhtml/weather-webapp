@@ -1,11 +1,12 @@
 const container = document.querySelector('.container');
 const search = document.querySelector('.search-box button');
+const searchInput = document.querySelector('.search-box input');
 const weatherBox = document.querySelector('.weather-box');
 const weatherDetails = document.querySelector('.weather-details');
 const error404 = document.querySelector('.not-found');
 const cityHide = document.querySelector('.city-hide');
 
-search.addEventListener('click', () => {
+function performSearch() {
 
     const APIKey = 'af0b4cc913b7702ba6ac740edb093db4';
     const city = document.querySelector('.search-box input').value;
@@ -137,5 +138,13 @@ search.addEventListener('click', () => {
 
     });
 
+};
+
+search.addEventListener('click', performSearch);
+searchInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        performSearch();
+    }
 });
+
 // https://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=af0b4cc913b7702ba6ac740edb093db4
