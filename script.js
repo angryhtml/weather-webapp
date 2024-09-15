@@ -5,15 +5,30 @@ const weatherBox = document.querySelector('.weather-box');
 const weatherDetails = document.querySelector('.weather-details');
 const error404 = document.querySelector('.not-found');
 const cityHide = document.querySelector('.city-hide');
+const APIKey = 'af0b4cc913b7702ba6ac740edb093db4';
 
-function performSearch() {
+function getCityByLocation(lat, lon) {
 
-    const APIKey = 'af0b4cc913b7702ba6ac740edb093db4';
-    const city = document.querySelector('.search-box input').value;
+    return fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${APIKey}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            const city = data[0].name;
+            console.log(`City: ${city}`)
+            return city;
+        } else {
+            return '';
+        }
+    });
+}
+
+function getWeatherByCity(city) {
 
     if (city == '')
         return;
+
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`).then(response => response.json()).then(json => {
+
 
         if (json.cod == '404') {
             cityHide.textContent = city;
@@ -140,10 +155,40 @@ function performSearch() {
 
 };
 
-search.addEventListener('click', performSearch);
-searchInput.addEventListener('keydown', function(event) {
+search.addEventListener('click', function (event) {
+    const city = document.querySelector('.search-box input').value;
+
+    getWeatherByCity(city);
+});
+searchInput.addEventListener('keydown', function (event) {
+    const city = document.querySelector('.search-box input').value;
+
     if (event.key === 'Enter') {
-        performSearch();
+        getWeatherByCity(city);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function (event) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+
+    }
+    function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log(latitude);
+        console.log(longitude);
+
+        getCityByLocation(latitude, longitude)
+            .then(response => {
+                getWeatherByCity(response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function error() {
+        return;
     }
 });
 
