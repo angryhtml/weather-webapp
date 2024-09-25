@@ -9,14 +9,18 @@ const translations = {
     ru: {
         chooseLocation: "Выберите ваше местоположение",
         humidity: "Влажность",
-        windSpeed: "Скорость ветра",
-        notFoundMessage: "Упс! Мы не смогли найти это место.",
+        windSpeed: "Ветер",
+        notFoundMessage: "Упс! Мы не смогли найти <br> это место.",
         windUnit: "Км/ч"
     }
 }
 
 function changeLanguage(language) {
     document.querySelector('.search-box input').placeholder = translations[language].chooseLocation;
+    document.querySelector('.humidity p').textContent = translations[language].humidity;
+    document.querySelector('.wind p').textContent = translations[language].windSpeed;
+    document.querySelector('.not-found p').innerHTML = translations[language].notFoundMessage;
+    document.querySelector('.info-wind span').textContent = translations[language].windUnit;
 }
 
 // Обработчики событий для кнопок смены языка
