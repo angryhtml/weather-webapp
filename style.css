@@ -205,7 +205,7 @@ body {
 
 .weather-details .wind {
     padding-right: 20px;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 .weather-details i {
@@ -281,4 +281,35 @@ body {
 .active-clone#clone-info-humidity span,
 .active-clone#clone-info-wind span {
     transform: translateY(0%);
+}
+
+div.language-box {
+    position: absolute; 
+    top: 10px; 
+    left: 10px;
+    display: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* background: rgba(255, 255, 255, .1);
+    border-radius: 16px;
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255, 255, 255, .2);
+    padding: 10px;
+    color: #fff; */
+}
+button.change-english,
+button.change-russian {
+    font-size: 15px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255, 255, 255, .2);
+    padding: 7px;
+    color: #fff;
+}
+
+button.change-english:focus,
+button.change-russian:focus {
+    background: rgba(255, 255, 255, 0.446)
 }
