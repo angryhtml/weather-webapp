@@ -9,7 +9,8 @@ The app allows users to check the current weather for any location by fetching d
 - **HTML**  
 - **CSS**  
 - **JavaScript**  
-- **OpenWeatherMap API**  
+- **OpenWeatherMap API**
+- **Netlify**
 
 ---
 
