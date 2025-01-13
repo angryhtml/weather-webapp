@@ -8,13 +8,16 @@
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="script.js" defer></script>
+    <script src="language.js" defer></script>
+    <script src="stylebuttons.js" defer></script>
 </head>
 
 <body>
     <header>
         <div class="language-box">
-            <button class="change-english">EN</button>
-            <button class="change-russian">RU</button>
+            <button id="en" class="change-language active" data-lang="en">EN</button>
+            <button id="ru" class="change-language" data-lang="ru">RU</button>
         </div>
     </header>
 
@@ -31,7 +34,7 @@
             <div class="box">
                 <div class="info-weather">
                     <div class="weather">
-                        <img src="pics/broken-clouds.png" alt="">
+                        <img src="pics/broken-clouds.png" alt="Weather picture">
                         <p class="temperature">16<span>°C</span></p>
                         <p class="description">Broken Clouds</p>
                     </div>
@@ -54,7 +57,7 @@
                 <i class='bx bx-wind' ></i>
                 <div class="text">
                     <div class="info-wind">
-                        <span>0Km/h</span>
+                        <span>0M/s</span>
                     </div>
                     <p>Wind Speed</p>
                 </div>
@@ -70,8 +73,5 @@
         </div>
 
     </div>
-
-    <script src="script.js"></script>
-    <script src="language.js"></script>
 </body>
 </html>
