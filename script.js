@@ -23,13 +23,11 @@ function getCityByLocation(lat, lon) {
 }
 
 function getWeatherByCity(city) {
+    if (city == '') return;
 
-    if (city == '')
-        return;
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`).then(response => response.json()).then(json => {
-
-
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
+        .then(response => response.json())
+        .then(json => {
         if (json.cod == '404') {
             cityHide.textContent = city;
             container.style.height = '400px';
@@ -39,22 +37,17 @@ function getWeatherByCity(city) {
             return;
         }
 
-
-
         const image = document.querySelector('.weather-box img');
         const temperature = document.querySelector('.weather-box .temperature');
         const description = document.querySelector('.weather-box .description');
         const humidity = document.querySelector('.weather-details .humidity span');
         const wind = document.querySelector('.weather-details .wind span');
 
-        console.log(json.weather[0].main);
-
         if (cityHide.textContent == city) {
             return;
         }
         else {
             cityHide.textContent = city;
-
             container.style.height = '555px';
             container.classList.add('active');
             weatherBox.classList.add('active');
@@ -69,31 +62,24 @@ function getWeatherByCity(city) {
                 case 'Clear':
                     image.src = 'pics/clear.png';
                     break;
-
                 case 'Rain':
                     image.src = 'pics/rainy.png';
                     break;
-
                 case 'Snow':
                     image.src = 'pics/snowy.png';
                     break;
-
                 case 'Clouds':
                     image.src = 'pics/cloudy.png';
                     break;
-
                 case 'Mist':
                     image.src = 'pics/mist.png';
                     break;
-
                 case 'Haze':
                     image.src = 'pics/mist.png';
                     break;
-
                 case 'Thunderstorm':
                     image.src = 'pics/thunder.png';
                     break;
-
                 default:
                     image.src = 'pics/broken-clouds.png';
             }
@@ -155,29 +141,26 @@ function getWeatherByCity(city) {
 
 };
 
-search.addEventListener('click', function (event) {
+search.addEventListener('click', function () {
     const city = document.querySelector('.search-box input').value;
-
     getWeatherByCity(city);
 });
+
 searchInput.addEventListener('keydown', function (event) {
     const city = document.querySelector('.search-box input').value;
-
     if (event.key === 'Enter') {
         getWeatherByCity(city);
     }
 });
 
-document.addEventListener('DOMContentLoaded', function (event) {
+document.addEventListener('DOMContentLoaded', function () {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
-
     }
+
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        console.log(latitude);
-        console.log(longitude);
 
         getCityByLocation(latitude, longitude)
             .then(response => {
