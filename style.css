@@ -252,9 +252,6 @@ body {
 #clone-info-wind {
     position: absolute;
     transform: translateY(-100%);
-    
-    /* border: 1px solid red; /* Debugging border */
-    /* background-color: rgba(255, 0, 0, 0.1); Debugging background */
 } 
 
 #clone-info-weather .weather {
@@ -290,15 +287,10 @@ div.language-box {
     display: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
-    /* background: rgba(255, 255, 255, .1);
-    border-radius: 16px;
-    backdrop-filter: blur(30px);
-    border: 2px solid rgba(255, 255, 255, .2);
-    padding: 10px;
-    color: #fff; */
 }
-button.change-english,
-button.change-russian {
+
+button#en,
+button#ru {
     font-size: 15px;
     font-weight: 500;
     background: rgba(255, 255, 255, 0.07);
@@ -309,7 +301,13 @@ button.change-russian {
     color: #fff;
 }
 
-button.change-english:focus,
-button.change-russian:focus {
-    background: rgba(255, 255, 255, 0.446)
+button#en:hover,
+button#ru:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3); 
+}
+
+button#en.active,
+button#ru.active {
+    background: rgba(255, 255, 255, 0.52);
 }
