@@ -25,7 +25,7 @@ function getCityByLocation(lat, lon) {
 function getWeatherByCity(city) {
     if (city == '') return;
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}&lang=${currentLanguage}`)
         .then(response => response.json())
         .then(json => {
         if (json.cod == '404') {
