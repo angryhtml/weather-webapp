@@ -25,7 +25,7 @@ function getCityByLocation(lat, lon) {
 function getWeatherByCity(city) {
     if (city == '') return;
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}&lang=${currentLanguage}`)
         .then(response => response.json())
         .then(json => {
         if (json.cod == '404') {
@@ -87,7 +87,10 @@ function getWeatherByCity(city) {
             temperature.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
             description.innerHTML = `${json.weather[0].description}`;
             humidity.innerHTML = `${json.main.humidity}%`;
-            wind.innerHTML = `${parseInt(json.wind.speed)}M/s`;
+
+            const windSpeed = parseInt(json.wind.speed);  // You should already have this value stored
+            wind.innerHTML = `${windSpeed}${translations[currentLanguage].windUnit}`;
+
 
             const infoWeather = document.querySelector('.info-weather');
             const infoHumidity = document.querySelector('.info-humidity');
@@ -174,5 +177,3 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 });
-
-// https://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=af0b4cc913b7702ba6ac740edb093db4
