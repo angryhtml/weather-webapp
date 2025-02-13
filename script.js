@@ -22,20 +22,34 @@ function getCityByLocation(lat, lon) {
     });
 }
 
+function getWeatherFromAPI(city) {
+    if (city == '') return;
+
+    const API_WEATHER = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}&lang=${currentLanguage}`;
+
+    return fetch(API_WEATHER)
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error fetching weather:', error)
+            }
+            return response.json();
+        });
+}
+
+
 function getWeatherByCity(city) {
     if (city == '') return;
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}&lang=${currentLanguage}`)
-        .then(response => response.json())
+    getWeatherFromAPI(city)
         .then(json => {
-        if (json.cod == '404') {
-            cityHide.textContent = city;
-            container.style.height = '400px';
-            weatherBox.classList.remove('active');
-            weatherDetails.classList.remove('active');
-            error404.classList.add('active');
-            return;
-        }
+            if (json.cod === '404') {
+                cityHide.textContent = city;
+                container.style.height = '400px';
+                weatherBox.classList.remove('active');
+                weatherDetails.classList.remove('active');
+                error404.classList.add('active');
+                return;
+            }
 
         const image = document.querySelector('.weather-box img');
         const temperature = document.querySelector('.weather-box .temperature');
@@ -88,7 +102,7 @@ function getWeatherByCity(city) {
             description.innerHTML = `${json.weather[0].description}`;
             humidity.innerHTML = `${json.main.humidity}%`;
 
-            const windSpeed = parseInt(json.wind.speed);  // You should already have this value stored
+            const windSpeed = parseInt(json.wind.speed);
             wind.innerHTML = `${windSpeed}${translations[currentLanguage].windUnit}`;
 
 
@@ -137,11 +151,7 @@ function getWeatherByCity(city) {
                 }, 2200)
             }
         }
-
-
-
-    });
-
+    })
 };
 
 search.addEventListener('click', function () {
