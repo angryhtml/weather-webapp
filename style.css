@@ -194,7 +194,7 @@ body {
 
 .weather-details .humidity .info-humidity,
 .weather-details .wind .info-wind {
-    transform: translateY(-100%);
+    transform: translateY(-110%);
     overflow: hidden;
 }
 
@@ -215,7 +215,7 @@ body {
 
 .weather-details span {
     display: inline-block;
-    font-size: 25px;
+    font-size: 27px;
     font-weight: 500;
 }
 
