@@ -57,10 +57,9 @@ function getWeatherByCity(city) {
         const humidity = document.querySelector('.weather-details .humidity span');
         const wind = document.querySelector('.weather-details .wind span');
 
-        if (cityHide.textContent == city) {
-            return;
-        }
-        else {
+            if (cityHide.textContent == city && prevLanguage == currentLanguage) {
+                return;
+            }
             cityHide.textContent = city;
             container.style.height = '555px';
             container.classList.add('active');
@@ -105,54 +104,39 @@ function getWeatherByCity(city) {
             const windSpeed = parseInt(json.wind.speed);
             wind.innerHTML = `${windSpeed}${translations[currentLanguage].windUnit}`;
 
+            const cloneContainers = ['.info-weather', '.info-humidity', '.info-wind'];
 
-            const infoWeather = document.querySelector('.info-weather');
-            const infoHumidity = document.querySelector('.info-humidity');
-            const infoWind = document.querySelector('.info-wind');
+            cloneContainers.forEach(selector => {
+                const original = document.querySelector(selector);
+                const clones = document.querySelectorAll(`${selector}.active-clone`);
 
-            const elCloneInfoWeather = infoWeather.cloneNode(true);
-            const elCloneInfoHumidity = infoHumidity.cloneNode(true);
-            const elCloneInfoWind = infoWind.cloneNode(true);
+                clones.forEach(clone => clone.remove());
 
-            elCloneInfoWeather.id = 'clone-info-weather';
-            elCloneInfoWeather.classList.add('active-clone');
-
-            elCloneInfoHumidity.id = 'clone-info-humidity';
-            elCloneInfoHumidity.classList.add('active-clone');
-
-            elCloneInfoWind.id = 'clone-info-wind';
-            elCloneInfoWind.classList.add('active-clone');
-
-            setTimeout(() => {
-                infoWeather.insertAdjacentElement("afterend", elCloneInfoWeather);
-                infoHumidity.insertAdjacentElement("afterend", elCloneInfoHumidity);
-                infoWind.insertAdjacentElement("afterend", elCloneInfoWind);
-            }, 2200);
-
-            const cloneInfoWeather = document.querySelectorAll('.info-weather.active-clone');
-            const totalCloneInfoWeather = cloneInfoWeather.length;
-            const cloneInfoWeatherFirst = cloneInfoWeather[0];
-
-            const cloneInfoHumidity = document.querySelectorAll('.info-humidity.active-clone');
-            const cloneInfoHumidityFirst = cloneInfoHumidity[0];
-
-            const cloneInfoHWind = document.querySelectorAll('.info-wind.active-clone');
-            const cloneInfoWindFirst = cloneInfoHWind[0];
-
-            if (totalCloneInfoWeather > 0) {
-                cloneInfoWeatherFirst.classList.remove('active-clone');
-                cloneInfoHumidityFirst.classList.remove('active-clone');
-                cloneInfoWindFirst.classList.remove('active-clone');
+                const newClone = original.cloneNode(true);
+                newClone.classList.add('active-clone');
+                newClone.id = `clone-${selector.replace('.', '')}`;
 
                 setTimeout(() => {
-                    cloneInfoWeatherFirst.remove();
-                    cloneInfoHumidityFirst.remove();
-                    cloneInfoWindFirst.remove();
-                }, 2200)
-            }
-        }
-    })
+                    original.insertAdjacentElement('afterend', newClone);
+                }, 2200);
+            });
+        })
+        .catch(error => console.error('Error fetching weather data:', error));
 };
+
+document.getElementById('en').addEventListener('click', () => {
+    changeLanguage('en');
+
+    const city = document.querySelector('.search-box input').value;
+    getWeatherByCity(city);
+});
+
+document.getElementById('ru').addEventListener('click', () => {
+    changeLanguage('ru');
+
+    const city = document.querySelector('.search-box input').value;
+    getWeatherByCity(city);
+});
 
 search.addEventListener('click', function () {
     const city = document.querySelector('.search-box input').value;

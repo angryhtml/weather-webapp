@@ -22,8 +22,10 @@ function updateWindUnit(newLanguage) {
 }
 
 let currentLanguage = 'en';
+let prevLanguage = 'en'
 
 function changeLanguage(language) {
+    prevLanguage = currentLanguage;
     currentLanguage = language;
 
     document.querySelector('.search-box input').placeholder = translations[language].chooseLocation;
@@ -33,13 +35,5 @@ function changeLanguage(language) {
     document.querySelector('.info-wind span').textContent = translations[language].windUnit;
     updateWindUnit(language);
 }
-
-document.getElementById('en').addEventListener('click', () => {
-    changeLanguage('en');
-});
-
-document.getElementById('ru').addEventListener('click', () => {
-    changeLanguage('ru');
-});
 
 changeLanguage('en');
