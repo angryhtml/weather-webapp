@@ -173,9 +173,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const longitude = position.coords.longitude;
 
         getCityByLocation(latitude, longitude)
-            .then(response => {
-                getWeatherByCity(response);
-            })
+        .then(city => {
+            if (city) {
+                // Обновляем поле ввода
+                searchInput.value = city;
+
+                // Загружаем погоду для найденного города
+                getWeatherByCity(city);
+        }})
             .catch(error => {
                 console.error('Error:', error);
             });
