@@ -7,19 +7,21 @@ const error404 = document.querySelector('.not-found');
 const cityHide = document.querySelector('.city-hide');
 const APIKey = 'af0b4cc913b7702ba6ac740edb093db4';
 
-function getCityByLocation(lat, lon) {
+let currentCity = ''; // Переменная для хранения текущего города
+let isSearchCompleted = false; // Флаг для отслеживания завершения поиска
 
+function getCityByLocation(lat, lon) {
     return fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${APIKey}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.length > 0) {
-            const city = data[0].name;
-            console.log(`City: ${city}`)
-            return city;
-        } else {
-            return '';
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const city = data[0].name;
+                console.log(`City: ${city}`);
+                return city;
+            } else {
+                return '';
+            }
+        });
 }
 
 function getWeatherFromAPI(city) {
@@ -30,21 +32,18 @@ function getWeatherFromAPI(city) {
     return fetch(API_WEATHER)
         .then(response => {
             if (!response.ok) {
-                // Если статус 404, возвращаем JSON для обработки в getWeatherByCity
                 if (response.status === 404) {
                     return response.json();
                 }
-                // Для других ошибок выбрасываем исключение
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
         })
         .catch(error => {
-            console.error('Error fetching weather:', error); // Используем переданный объект ошибки
-            throw error; // Пробрасываем ошибку дальше, чтобы её можно было обработать в getWeatherByCity
+            console.error('Error fetching weather:', error);
+            throw error;
         });
 }
-
 
 function getWeatherByCity(city) {
     if (city == '') return;
@@ -60,19 +59,23 @@ function getWeatherByCity(city) {
 
                 searchInput.value = '';
                 searchInput.focus();
-                
+
                 return;
             }
 
-        const image = document.querySelector('.weather-box img');
-        const temperature = document.querySelector('.weather-box .temperature');
-        const description = document.querySelector('.weather-box .description');
-        const humidity = document.querySelector('.weather-details .humidity span');
-        const wind = document.querySelector('.weather-details .wind span');
+            isSearchCompleted = true; // Поиск завершён
+
+            // Остальная логика для отображения погоды
+            const image = document.querySelector('.weather-box img');
+            const temperature = document.querySelector('.weather-box .temperature');
+            const description = document.querySelector('.weather-box .description');
+            const humidity = document.querySelector('.weather-details .humidity span');
+            const wind = document.querySelector('.weather-details .wind span');
 
             if (cityHide.textContent == city && prevLanguage == currentLanguage) {
                 return;
             }
+
             cityHide.textContent = city;
             container.style.height = '555px';
             container.classList.add('active');
@@ -82,7 +85,7 @@ function getWeatherByCity(city) {
 
             setTimeout(() => {
                 container.classList.remove('active');
-            }, 2500);
+            }, 1700);
 
             switch (json.weather[0].main) {
                 case 'Clear':
@@ -131,35 +134,46 @@ function getWeatherByCity(city) {
 
                 setTimeout(() => {
                     original.insertAdjacentElement('afterend', newClone);
-                }, 2200);
+                }, 1700);
             });
         })
         .catch(error => console.error('Error fetching weather data:', error));
-};
+}
 
 document.getElementById('en').addEventListener('click', () => {
     changeLanguage('en');
 
-    const city = document.querySelector('.search-box input').value;
-    getWeatherByCity(city);
+    if (currentCity) {
+        getWeatherByCity(currentCity); // Обновляем данные на английском
+    }
 });
 
 document.getElementById('ru').addEventListener('click', () => {
     changeLanguage('ru');
 
-    const city = document.querySelector('.search-box input').value;
-    getWeatherByCity(city);
+    if (currentCity) {
+        getWeatherByCity(currentCity); // Обновляем данные на русском
+    }
 });
 
 search.addEventListener('click', function () {
     const city = document.querySelector('.search-box input').value;
+    currentCity = city; // Сохраняем текущий город
     getWeatherByCity(city);
 });
 
 searchInput.addEventListener('keydown', function (event) {
     const city = document.querySelector('.search-box input').value;
     if (event.key === 'Enter') {
+        currentCity = city; // Сохраняем текущий город
         getWeatherByCity(city);
+    }
+});
+
+searchInput.addEventListener('focus', function () {
+    if (isSearchCompleted) {
+        searchInput.value = ''; // Очищаем поле ввода
+        isSearchCompleted = false; // Сбрасываем флаг
     }
 });
 
@@ -173,12 +187,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const longitude = position.coords.longitude;
 
         getCityByLocation(latitude, longitude)
-        .then(city => {
-            if (city) {
-                currentCity = city; // Сохраняем город
-                searchInput.value = city; // Обновляем поле ввода
-                getWeatherByCity(city); // Загружаем погоду
-        }})
+            .then(city => {
+                if (city) {
+                    currentCity = city; // Сохраняем город
+                    searchInput.value = city; // Обновляем поле ввода
+                    getWeatherByCity(city); // Загружаем погоду
+                } else {
+                    console.warn('No city found for your location. Please enter a city manually.');
+                    alert('No city found for your location. Please enter a city manually.');
+                    searchInput.value = ''; // Очищаем поле ввода
+                    searchInput.focus();    // Устанавливаем фокус на поле ввода
+                }
+            })
             .catch(error => {
                 console.error('Error:', error);
             });
