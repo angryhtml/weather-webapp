@@ -175,11 +175,9 @@ document.addEventListener('DOMContentLoaded', function () {
         getCityByLocation(latitude, longitude)
         .then(city => {
             if (city) {
-                // Обновляем поле ввода
-                searchInput.value = city;
-
-                // Загружаем погоду для найденного города
-                getWeatherByCity(city);
+                currentCity = city; // Сохраняем город
+                searchInput.value = city; // Обновляем поле ввода
+                getWeatherByCity(city); // Загружаем погоду
         }})
             .catch(error => {
                 console.error('Error:', error);
