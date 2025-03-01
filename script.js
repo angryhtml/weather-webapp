@@ -24,6 +24,10 @@ function getCityByLocation(lat, lon) {
         });
 }
 
+function translateCity(city, targetLanguage) {
+    return city;
+}
+
 function getWeatherFromAPI(city) {
     if (city == '') return;
 
@@ -85,7 +89,7 @@ function getWeatherByCity(city) {
 
             setTimeout(() => {
                 container.classList.remove('active');
-            }, 1700);
+            }, 1600);
 
             switch (json.weather[0].main) {
                 case 'Clear':
@@ -134,7 +138,7 @@ function getWeatherByCity(city) {
 
                 setTimeout(() => {
                     original.insertAdjacentElement('afterend', newClone);
-                }, 1700);
+                }, 1600); 
             });
         })
         .catch(error => console.error('Error fetching weather data:', error));
@@ -144,7 +148,9 @@ document.getElementById('en').addEventListener('click', () => {
     changeLanguage('en');
 
     if (currentCity) {
-        getWeatherByCity(currentCity); // Обновляем данные на английском
+        const translatedCity = translateCity(currentCity, 'en'); // Переводим город на английский
+        searchInput.value = translatedCity; // Обновляем поле ввода
+        getWeatherByCity(translatedCity); // Обновляем данные
     }
 });
 
@@ -152,7 +158,9 @@ document.getElementById('ru').addEventListener('click', () => {
     changeLanguage('ru');
 
     if (currentCity) {
-        getWeatherByCity(currentCity); // Обновляем данные на русском
+        const translatedCity = translateCity(currentCity, 'ru'); // Переводим город на русский
+        searchInput.value = translatedCity; // Обновляем поле ввода
+        getWeatherByCity(translatedCity); // Обновляем данные
     }
 });
 
@@ -203,7 +211,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error);
             });
     }
+
     function error() {
         return;
     }
 });
+
