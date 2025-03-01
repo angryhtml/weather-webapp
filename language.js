@@ -16,9 +16,17 @@ const translations = {
 }
 
 function updateWindUnit(newLanguage) {
-    const cloneInfoHWind = document.getElementById('clone-info-wind').innerHTML;
-    const windSpeed = cloneInfoHWind.replace(/M\/s|М\/с/g, `${translations[newLanguage].windUnit}`);
-    cloneInfoHWind.innerHTML = `${windSpeed}`;
+    const cloneInfoHWind = document.getElementById('clone-info-wind');
+
+    // Проверяем, существует ли элемент
+    if (!cloneInfoHWind) {
+        console.warn('Element with id "clone-info-wind" not found.');
+        return;
+    }
+
+    // Обновляем текст с учётом нового языка
+    const windSpeed = cloneInfoHWind.innerHTML.replace(/M\/s|М\/с/g, `${translations[newLanguage].windUnit}`);
+    cloneInfoHWind.innerHTML = windSpeed;
 }
 
 let currentLanguage = 'en';

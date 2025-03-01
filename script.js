@@ -30,9 +30,18 @@ function getWeatherFromAPI(city) {
     return fetch(API_WEATHER)
         .then(response => {
             if (!response.ok) {
-                console.error('Error fetching weather:', error)
+                // Если статус 404, возвращаем JSON для обработки в getWeatherByCity
+                if (response.status === 404) {
+                    return response.json();
+                }
+                // Для других ошибок выбрасываем исключение
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
+        })
+        .catch(error => {
+            console.error('Error fetching weather:', error); // Используем переданный объект ошибки
+            throw error; // Пробрасываем ошибку дальше, чтобы её можно было обработать в getWeatherByCity
         });
 }
 
@@ -48,6 +57,10 @@ function getWeatherByCity(city) {
                 weatherBox.classList.remove('active');
                 weatherDetails.classList.remove('active');
                 error404.classList.add('active');
+
+                searchInput.value = '';
+                searchInput.focus();
+                
                 return;
             }
 
